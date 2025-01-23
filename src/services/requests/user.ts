@@ -1,5 +1,6 @@
-import { ApiDeleteUser, ApiGetUser, ApiUpdateUser } from '../../@types/Auth';
 import { api } from '../api';
+
+import { ApiDeleteUser, ApiGetUser, ApiUpdateUser } from '../../@types/Auth';
 
 export async function getUser() {
   return await api<ApiGetUser>({
