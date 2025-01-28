@@ -1,6 +1,8 @@
-import { User } from "../@types/Auth";
+import { signIn } from "../services/requests/auth";
 
 import { useAppDispatch } from "../redux/hooks";
+
+import { User } from "../@types/Auth";
 
 import {
   setAuthStatus,
@@ -25,8 +27,29 @@ export default function useAuth() {
     localStorage.getItem(LOCAL_STORAGE_KEY);
   }
 
+  async function handleSignIn({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) {
+    const request = await signIn(email, password);
+
+    if (request.data) {
+      const { data } = request;
+
+      authenticate(data.user, data.authToken);
+      return true;
+    }
+
+    dispatch(setAuthStatus("not_authenticated"));
+    return request.err;
+  }
+
   return {
     authenticate,
     handleGetToken,
+    handleSignIn,
   };
 }
