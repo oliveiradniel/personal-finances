@@ -68,10 +68,19 @@ export default function useAuth() {
     return request.err;
   }
 
+  function handleSignOut() {
+    dispatch(setUser(null));
+    dispatch(setAuthToken(null));
+    dispatch(setAuthStatus("not_authenticated"));
+
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+  }
+
   return {
     authenticate,
     handleGetToken,
     handleSignIn,
     handleSignUp,
+    handleSignOut,
   };
 }
