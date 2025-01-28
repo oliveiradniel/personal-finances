@@ -1,4 +1,4 @@
-import { signIn } from "../services/requests/auth";
+import { signIn, signUp } from "../services/requests/auth";
 
 import { useAppDispatch } from "../redux/hooks";
 
@@ -47,9 +47,31 @@ export default function useAuth() {
     return request.err;
   }
 
+  async function handleSignUp({
+    name,
+    email,
+    password,
+  }: {
+    name: string;
+    email: string;
+    password: string;
+  }) {
+    const request = await signUp(name, email, password);
+
+    if (request.data) {
+      const { data } = request;
+
+      authenticate(data.user, data.authToken);
+    }
+
+    dispatch(setAuthStatus("not_authenticated"));
+    return request.err;
+  }
+
   return {
     authenticate,
     handleGetToken,
     handleSignIn,
+    handleSignUp,
   };
 }
