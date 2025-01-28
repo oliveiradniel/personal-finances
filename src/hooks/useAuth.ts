@@ -9,6 +9,7 @@ import {
   setAuthToken,
   setUser,
 } from "../redux/slices/authSlice";
+import { getUser } from "../services/requests/user";
 
 const LOCAL_STORAGE_KEY = import.meta.env.VITE_LOCAL_STORAGE_AUTH_KEY;
 
@@ -25,6 +26,19 @@ export default function useAuth() {
 
   function handleGetToken() {
     localStorage.getItem(LOCAL_STORAGE_KEY);
+  }
+
+  async function handleAuthenticateUser() {
+    const request = await getUser();
+    const authToken = handleGetToken();
+
+    if (!request.data) {
+      dispatch(setAuthStatus("not_authenticated"));
+      return;
+    }
+
+    const { data } = request;
+    authenticate(data.user, authToken!);
   }
 
   async function handleSignIn({
@@ -79,6 +93,7 @@ export default function useAuth() {
   return {
     authenticate,
     handleGetToken,
+    handleAuthenticateUser,
     handleSignIn,
     handleSignUp,
     handleSignOut,
