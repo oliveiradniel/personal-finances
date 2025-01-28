@@ -21,7 +21,12 @@ export default function useAuth() {
     localStorage.setItem(LOCAL_STORAGE_KEY, authToken);
   }
 
+  function handleGetToken() {
+    localStorage.getItem(LOCAL_STORAGE_KEY);
+  }
+
   return {
     authenticate,
+    handleGetToken,
   };
 }
