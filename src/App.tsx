@@ -8,6 +8,8 @@ import { lightTheme } from "./assets/styles/themes/lightTheme";
 
 import { ThemeProvider } from "styled-components";
 
+import "./index.css";
+
 export default function App() {
   const { handleAuthenticateUser } = useAuth();
   const { handleInitTheme, theme } = useTheme();
