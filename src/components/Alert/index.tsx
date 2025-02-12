@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { MdDoneAll, MdInfoOutline } from "react-icons/md";
+import { MdDoneAll, MdInfoOutline } from 'react-icons/md';
 
-import { Container, Content, Title } from "./styles";
+import { Container, Content, Title } from './styles';
 
 type AlertProps = {
-  type: "error" | "success";
+  type: 'error' | 'success';
   isVisible: boolean;
   setIsVisible: (value: boolean) => void;
   autoHideDuration?: number;
@@ -32,8 +32,8 @@ export default function Alert({
   return (
     <Container $isVisible={isVisible} $type={type}>
       <Content>
-        {type === "error" && <MdInfoOutline className="icon" />}
-        {type === "success" && <MdDoneAll className="icon" />}
+        {type === 'error' && <MdInfoOutline className="icon" />}
+        {type === 'success' && <MdDoneAll className="icon" />}
         {title && <Title>{title}</Title>}
         {children}
       </Content>
