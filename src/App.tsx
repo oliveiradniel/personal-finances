@@ -3,9 +3,16 @@ import { useEffect } from "react";
 import useAuth from "./hooks/useAuth";
 import useTheme from "./hooks/useTheme";
 
+import { darkTheme } from "./assets/styles/themes/darkTheme";
+import { lightTheme } from "./assets/styles/themes/lightTheme";
+
+import { ThemeProvider } from "styled-components";
+
 export default function App() {
   const { handleAuthenticateUser } = useAuth();
-  const { handleInitTheme } = useTheme();
+  const { handleInitTheme, theme } = useTheme();
+
+  const themeDirection = theme === "dark" ? darkTheme : lightTheme;
 
   useEffect(() => {
     // Authenticate user using token saved in local storage
@@ -15,5 +22,9 @@ export default function App() {
     handleInitTheme();
   }, [handleAuthenticateUser, handleInitTheme]);
 
-  return <div>Personal Finances</div>;
+  return (
+    <ThemeProvider theme={themeDirection}>
+      <div>Personal Finances</div>
+    </ThemeProvider>
+  );
 }
