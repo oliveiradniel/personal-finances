@@ -9,7 +9,7 @@ import { lightTheme } from './assets/styles/themes/lightTheme';
 import { ThemeProvider } from 'styled-components';
 
 import './index.css';
-import Alert from './components/Alert';
+import Button from './components/Button';
 
 export default function App() {
   const { handleAuthenticateUser } = useAuth();
@@ -28,12 +28,7 @@ export default function App() {
   return (
     <ThemeProvider theme={themeDirection}>
       <div>Personal Finances</div>
-      <Alert
-        isVisible={true}
-        setIsVisible={() => {}}
-        type="success"
-        title="Hello"
-      />
+      <Button>Hello</Button>
     </ThemeProvider>
   );
 }
