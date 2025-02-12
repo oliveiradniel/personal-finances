@@ -1,44 +1,26 @@
+import { useCallback } from "react";
+
 import { signIn, signUp } from "../services/requests/auth";
 
 import { useAppDispatch } from "../redux/hooks";
 
 import { User } from "../@types/Auth";
 
+import { getUser } from "../services/requests/user";
+
 import {
   setAuthStatus,
   setAuthToken,
   setUser,
 } from "../redux/slices/authSlice";
-import { getUser } from "../services/requests/user";
 
 const LOCAL_STORAGE_KEY = import.meta.env.VITE_LOCAL_STORAGE_AUTH_KEY;
 
 export default function useAuth() {
   const dispatch = useAppDispatch();
 
-  function authenticate(user: User, authToken: string) {
-    dispatch(setUser(user));
-    dispatch(setAuthToken(authToken));
-    dispatch(setAuthStatus("authenticated"));
-
-    localStorage.setItem(LOCAL_STORAGE_KEY, authToken);
-  }
-
   function handleGetToken() {
-    localStorage.getItem(LOCAL_STORAGE_KEY);
-  }
-
-  async function handleAuthenticateUser() {
-    const request = await getUser();
-    const authToken = handleGetToken();
-
-    if (!request.data) {
-      dispatch(setAuthStatus("not_authenticated"));
-      return;
-    }
-
-    const { data } = request;
-    authenticate(data.user, authToken!);
+    return localStorage.getItem(LOCAL_STORAGE_KEY);
   }
 
   async function handleSignIn({
@@ -89,6 +71,30 @@ export default function useAuth() {
 
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   }
+
+  const authenticate = useCallback(
+    (user: User, authToken: string) => {
+      dispatch(setUser(user));
+      dispatch(setAuthToken(authToken));
+      dispatch(setAuthStatus("authenticated"));
+
+      localStorage.setItem(LOCAL_STORAGE_KEY, authToken);
+    },
+    [dispatch]
+  );
+
+  const handleAuthenticateUser = useCallback(async () => {
+    const request = await getUser();
+    const authToken = handleGetToken();
+
+    if (!request.data || !authToken) {
+      dispatch(setAuthStatus("not_authenticated"));
+      return;
+    }
+
+    const { data } = request;
+    authenticate(data.user, authToken);
+  }, [authenticate, dispatch]);
 
   return {
     authenticate,
