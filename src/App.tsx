@@ -9,7 +9,6 @@ import { lightTheme } from './assets/styles/themes/lightTheme';
 import { ThemeProvider } from 'styled-components';
 
 import './index.css';
-import Button from './components/Button';
 
 export default function App() {
   const { handleAuthenticateUser } = useAuth();
@@ -28,7 +27,6 @@ export default function App() {
   return (
     <ThemeProvider theme={themeDirection}>
       <div>Personal Finances</div>
-      <Button>Hello</Button>
     </ThemeProvider>
   );
 }
