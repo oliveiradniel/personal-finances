@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 
+import { BrowserRouter } from 'react-router-dom';
+
 import useAuth from './hooks/useAuth';
 import useTheme from './hooks/useTheme';
+
+import Router from './routes';
 
 import { darkTheme } from './assets/styles/themes/darkTheme';
 import { lightTheme } from './assets/styles/themes/lightTheme';
@@ -25,8 +29,10 @@ export default function App() {
   }, [handleAuthenticateUser, handleInitTheme]);
 
   return (
-    <ThemeProvider theme={themeDirection}>
-      <div>Personal Finances</div>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={themeDirection}>
+        <Router />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }

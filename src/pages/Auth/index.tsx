@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
 
+import Alert from '../../components/Alert';
+import TextInput from '../../components/TextInput';
+import Button from '../../components/Button';
+
 import {
   Card,
   CardBody,
@@ -15,9 +19,6 @@ import {
   StyledLink,
   Wrapper,
 } from './styles';
-import Alert from '../../components/Alert';
-import TextInput from '../../components/TextInput';
-import Button from '../../components/Button';
 
 type ShowAlert = {
   type: 'error' | 'success';
