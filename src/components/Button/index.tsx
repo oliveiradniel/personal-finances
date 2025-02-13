@@ -5,6 +5,7 @@ type ButtonProps = {
   onClick?: () => void;
   size?: Omit<TSizes, 'rounded'>;
   borderRadius?: TSizes;
+  type: 'button' | 'reset' | 'submit';
   width?: string;
 };
 
@@ -13,11 +14,12 @@ export default function Button({
   onClick,
   size = 'sm',
   borderRadius = 'sm',
+  type = 'button',
   width = '100%',
 }: ButtonProps) {
   return (
     <Container
-      type="button"
+      type={type}
       $borderRadius={borderRadius}
       $size={size}
       $width={width}
