@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -44,7 +44,9 @@ export default function Auth({ type }: AuthPros) {
 
   const navigate = useNavigate();
 
-  async function handleOnClick() {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     if ((type === 'signup' && !name) || !email || !password) {
       setShowAlert({
         type: 'error',
@@ -54,12 +56,20 @@ export default function Auth({ type }: AuthPros) {
       return;
     }
 
-    const request = await (type === 'signin'
-      ? handleSignIn({ email, password })
-      : handleSignUp({ name, email, password }));
+    let request: boolean | string;
+
+    if (type === 'signin') {
+      request = await handleSignIn({ email, password });
+    } else {
+      request = await handleSignUp({ name, email, password });
+    }
 
     if (request !== true) {
-      setShowAlert({ type: 'error', message: request!, isVisible: true });
+      setShowAlert({
+        type: 'error',
+        message: typeof request === 'string' ? request : 'Erro desconhecido',
+        isVisible: true,
+      });
       return;
     }
 
@@ -92,7 +102,7 @@ export default function Auth({ type }: AuthPros) {
           </CardHeader>
 
           <CardBody>
-            <form onSubmit={handleOnClick}>
+            <form onSubmit={handleSubmit}>
               {type === 'signup' && (
                 <TextInput
                   value={name}
@@ -118,11 +128,11 @@ export default function Auth({ type }: AuthPros) {
                 </Button>
 
                 {type === 'signin' ? (
-                  <StyledLink to="signup">
-                    Não tem uma conta? Clique aqui para criar uma conta.
+                  <StyledLink to="/signup">
+                    Não tem uma conta? Clique aqui para criar uma
                   </StyledLink>
                 ) : (
-                  <StyledLink to="signin">Já tem conta? Entrar.</StyledLink>
+                  <StyledLink to="/signin">Já tem conta? Entrar</StyledLink>
                 )}
               </CardFooter>
             </form>

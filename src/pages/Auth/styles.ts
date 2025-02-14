@@ -24,6 +24,7 @@ export const Card = styled.div`
   border-radius: 4px;
   box-shadow: black 0px 3px 7px -6px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   gap: 30px;
   padding: 30px;
@@ -40,7 +41,7 @@ export const CardHeader = styled.div`
 export const CardTitle = styled.span`
   color: ${({ theme }) => theme.COLORS.authCardSubTitleColor};
   font-size: ${({ theme }) => theme.FONT_SIZES.lg};
-  font-weight: 800px;
+  font-weight: 800;
 `;
 
 export const CardSubTitle = styled.span`
@@ -50,16 +51,23 @@ export const CardSubTitle = styled.span`
 `;
 
 export const CardBody = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
   width: 100%;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    > *:last-child {
+      margin-top: 28px;
+    }
+  }
 `;
 
 export const CardFooter = styled.div`
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   gap: 20px;
   width: 100%;
@@ -68,4 +76,5 @@ export const CardFooter = styled.div`
 export const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.primary};
   font-size: ${({ theme }) => theme.FONT_SIZES.sm};
+  text-decoration: none;
 `;

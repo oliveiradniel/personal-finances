@@ -5,6 +5,10 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 5px;
   width: 100%;
+
+  & + & {
+    margin-top: 14px;
+  }
 `;
 
 export const Label = styled.label`
@@ -21,7 +25,6 @@ export const Input = styled.input<{ $borderRadius?: 'sm' | 'md' }>`
   color: ${({ theme }) => theme.COLORS.inputColor};
   outline: none;
   padding: 11px 28px;
-  width: 100%;
 
   transition: all 0.3s ease-in-out;
 
@@ -34,6 +37,6 @@ export const Input = styled.input<{ $borderRadius?: 'sm' | 'md' }>`
   }
 
   &:focus {
-    border-color: ${({ theme }) => theme.COLORS.inputBorderColor};
+    border-color: ${({ theme }) => theme.COLORS.inputBorderColorFocus};
   }
 `;
