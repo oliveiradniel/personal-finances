@@ -9,6 +9,11 @@ export const Container = styled.div`
   & + & {
     margin-top: 14px;
   }
+
+  span {
+    font-size: 12px;
+    margin-top: 4px;
+  }
 `;
 
 export const Label = styled.label`

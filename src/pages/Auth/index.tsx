@@ -44,7 +44,7 @@ export default function Auth({ type }: AuthPros) {
 
   const navigate = useNavigate();
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleOnClick(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if ((type === 'signup' && !name) || !email || !password) {
@@ -65,9 +65,34 @@ export default function Auth({ type }: AuthPros) {
     }
 
     if (request !== true) {
+      let message: string | undefined;
+
+      if (
+        request.includes(
+          'Input does not meet minimum length requirement of 8 characters'
+        )
+      ) {
+        message = 'A senha precisa ter no mínimo 8 caracteres.';
+      }
+
+      if (
+        request.includes(
+          'Weak password detected. Please use at least 1 letters.'
+        )
+      ) {
+        message = 'A senha precisa ter no mínimo 1 letra.';
+      }
+
+      if (request.includes('This account is already in use.')) {
+        message = 'Este email já está em uso.';
+      }
+
       setShowAlert({
         type: 'error',
-        message: typeof request === 'string' ? request : 'Erro desconhecido',
+        message:
+          typeof request === 'string'
+            ? message ?? request
+            : 'Erro desconhecido',
         isVisible: true,
       });
       return;
@@ -102,7 +127,7 @@ export default function Auth({ type }: AuthPros) {
           </CardHeader>
 
           <CardBody>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleOnClick}>
               {type === 'signup' && (
                 <TextInput
                   value={name}
@@ -110,6 +135,7 @@ export default function Auth({ type }: AuthPros) {
                   onChange={(e) => setName(e.target.value)}
                 />
               )}
+
               <TextInput
                 value={email}
                 placeholder="Digite seu email"
@@ -119,6 +145,7 @@ export default function Auth({ type }: AuthPros) {
               <TextInput
                 value={password}
                 placeholder="Digite sua senha"
+                isTypePassword
                 onChange={(e) => setPassword(e.target.value)}
               />
 

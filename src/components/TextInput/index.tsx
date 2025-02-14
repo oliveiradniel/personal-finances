@@ -7,6 +7,7 @@ type TextInputProps = {
   label?: string;
   placeholder?: string;
   value: string;
+  isTypePassword?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -16,6 +17,7 @@ export default function TextInput({
   placeholder,
   onChange,
   borderRadius = 'sm',
+  isTypePassword = false,
 }: TextInputProps) {
   const inputReferenceId = useId();
 
@@ -29,6 +31,7 @@ export default function TextInput({
         onChange={onChange}
         $borderRadius={borderRadius}
       />
+      {isTypePassword && <span>* Use pelo menos 1 letra.</span>}
     </Container>
   );
 }
