@@ -49,8 +49,6 @@ export default function Sidebar() {
     setIsExpanded((prevState) => !prevState);
   }
 
-  console.log(auth);
-
   return (
     <Container $expanded={isExpanded}>
       <Header>
@@ -81,7 +79,7 @@ export default function Sidebar() {
       </NavigationContainer>
 
       <Footer>
-        <StyledLink to="/account">
+        <StyledLink to="/perfil">
           <User $isActive={pathname === '/account'}>
             <UserAvatar>{auth.user?.name.slice(0, 2)}</UserAvatar>
             <UserName>{auth.user?.name}</UserName>

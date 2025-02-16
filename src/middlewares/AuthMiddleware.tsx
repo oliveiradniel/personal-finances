@@ -19,5 +19,5 @@ export default function AuthMiddleware({ children }: AuthMiddlewareProps) {
     return <Loader />;
   }
 
-  return <Navigate to="/signin" />;
+  return <Navigate to={`/signup`} />;
 }
