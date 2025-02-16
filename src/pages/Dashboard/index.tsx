@@ -6,6 +6,8 @@ import { getDashboard } from '../../services/requests/dashboard';
 
 import { formatValue } from '../../utils/formatValue';
 
+import { ScaleLoader } from 'react-spinners';
+
 import { FcBullish, FcCancel, FcOk } from 'react-icons/fc';
 import { MdAdd } from 'react-icons/md';
 
@@ -25,11 +27,13 @@ import {
   InformationCardContent,
   InformationCardContentLabel,
   InformationCardContentValue,
+  Loading,
   NewTransactionCard,
   NewTransactionCardLabel,
 } from './styles';
 
 export default function Dashboard() {
+  const [isLoadingRequest, setIsLoadingRequest] = useState(true);
   const [monthSelected, setMonthSelected] = useState(
     (new Date().getMonth() + 1).toString().padStart(2, '0')
   );
@@ -71,9 +75,13 @@ export default function Dashboard() {
   }
 
   const handleGetDashbord = useCallback(async () => {
+    setIsLoadingRequest(true);
+
     const response = await getDashboard(monthSelected, yearSelected);
 
     setDataDashboard(response);
+
+    setIsLoadingRequest(false);
   }, [monthSelected, yearSelected]);
 
   useEffect(() => {
@@ -105,69 +113,77 @@ export default function Dashboard() {
         </HeaderFilter>
       </Header>
 
-      <Body>
-        <BodyRow>
-          <InformationCard>
-            <FcBullish size={32} />
+      {isLoadingRequest && (
+        <Loading>
+          <ScaleLoader color={theme.COLORS.primary} />
+        </Loading>
+      )}
 
-            <InformationCardContent>
-              <InformationCardContentValue
-                style={{
-                  color:
-                    dataDashboard.balance >= 0
-                      ? theme.COLORS.success
-                      : theme.COLORS.danger,
-                }}
-              >
-                {formatValue(dataDashboard.balance)}
-              </InformationCardContentValue>
+      {!isLoadingRequest && (
+        <Body>
+          <BodyRow>
+            <InformationCard>
+              <FcBullish size={32} />
 
-              <InformationCardContentLabel>
-                Saldo atual do mês!
-              </InformationCardContentLabel>
-            </InformationCardContent>
-          </InformationCard>
+              <InformationCardContent>
+                <InformationCardContentValue
+                  style={{
+                    color:
+                      dataDashboard.balance >= 0
+                        ? theme.COLORS.success
+                        : theme.COLORS.danger,
+                  }}
+                >
+                  {formatValue(dataDashboard.balance)}
+                </InformationCardContentValue>
 
-          <InformationCard>
-            <FcCancel size={32} />
+                <InformationCardContentLabel>
+                  Saldo atual do mês!
+                </InformationCardContentLabel>
+              </InformationCardContent>
+            </InformationCard>
 
-            <InformationCardContent>
-              <InformationCardContentValue>
-                {formatValue(dataDashboard.pending_transactions)}
-              </InformationCardContentValue>
+            <InformationCard>
+              <FcCancel size={32} />
 
-              <InformationCardContentLabel>
-                Transações Pendentes
-              </InformationCardContentLabel>
-            </InformationCardContent>
-          </InformationCard>
+              <InformationCardContent>
+                <InformationCardContentValue>
+                  {formatValue(dataDashboard.pending_transactions)}
+                </InformationCardContentValue>
 
-          <InformationCard>
-            <FcOk size={32} />
+                <InformationCardContentLabel>
+                  Transações Pendentes
+                </InformationCardContentLabel>
+              </InformationCardContent>
+            </InformationCard>
 
-            <InformationCardContent>
-              <InformationCardContentValue>
-                {formatValue(dataDashboard.completed_transactions)}
-              </InformationCardContentValue>
+            <InformationCard>
+              <FcOk size={32} />
 
-              <InformationCardContentLabel>
-                Transações Concluídas
-              </InformationCardContentLabel>
-            </InformationCardContent>
-          </InformationCard>
-        </BodyRow>
+              <InformationCardContent>
+                <InformationCardContentValue>
+                  {formatValue(dataDashboard.completed_transactions)}
+                </InformationCardContentValue>
 
-        <BodyRow>
-          <NewTransactionCard to="transações/nova">
-            <Button borderRadius="rounded">
-              <MdAdd size={21} />
-            </Button>
-            <NewTransactionCardLabel>
-              Criar nova transação
-            </NewTransactionCardLabel>
-          </NewTransactionCard>
-        </BodyRow>
-      </Body>
+                <InformationCardContentLabel>
+                  Transações Concluídas
+                </InformationCardContentLabel>
+              </InformationCardContent>
+            </InformationCard>
+          </BodyRow>
+
+          <BodyRow>
+            <NewTransactionCard to="transações/nova">
+              <Button borderRadius="rounded">
+                <MdAdd size={21} />
+              </Button>
+              <NewTransactionCardLabel>
+                Criar nova transação
+              </NewTransactionCardLabel>
+            </NewTransactionCard>
+          </BodyRow>
+        </Body>
+      )}
     </Container>
   );
 }
