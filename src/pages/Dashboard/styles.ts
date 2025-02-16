@@ -11,6 +11,7 @@ export const Container = styled.div`
 export const Header = styled.header`
   border-bottom: 1px solid ${({ theme }) => theme.COLORS.borderColor};
   display: flex;
+  gap: 4px;
   justify-content: space-between;
   padding: 40px 60px 40px 50px;
 `;
@@ -20,7 +21,7 @@ export const HeaderInfo = styled.div`
   flex-direction: column;
 `;
 
-export const HeaderItem = styled.span`
+export const HeaderTitle = styled.span`
   color: ${({ theme }) => theme.COLORS.textColor500};
   font-size: ${({ theme }) => theme.FONT_SIZES.xl};
   font-weight: 800;
@@ -28,10 +29,12 @@ export const HeaderItem = styled.span`
 
 export const HeaderSubtitle = styled.span`
   color: ${({ theme }) => theme.COLORS.textColor500};
-  font-size: ${({ theme }) => theme.FONT_SIZES.sm};
+  font-size: 14px;
+  opacity: 0.7;
 `;
 
 export const HeaderFilter = styled.div`
+  align-items: center;
   display: flex;
   gap: 14px;
   width: 320px;
@@ -40,7 +43,7 @@ export const HeaderFilter = styled.div`
 export const Loading = styled.div`
   align-items: center;
   display: flex;
-  float: 1;
+  flex: 1;
   justify-content: center;
 `;
 
@@ -52,6 +55,10 @@ export const Body = styled.div`
 export const BodyRow = styled.div`
   display: flex;
   gap: 10px;
+
+  & + div {
+    margin-top: 30px;
+  }
 `;
 
 export const InformationCard = styled.div`
@@ -64,7 +71,7 @@ export const InformationCard = styled.div`
   width: 100%;
 `;
 
-export const InformationCardContainer = styled.div`
+export const InformationCardContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;

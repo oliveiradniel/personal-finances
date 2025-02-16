@@ -5,7 +5,7 @@ type ButtonProps = {
   onClick?: () => void;
   size?: Omit<TSizes, 'rounded'>;
   borderRadius?: TSizes;
-  type: 'button' | 'reset' | 'submit';
+  type?: 'button' | 'reset' | 'submit';
   width?: string;
 };
 

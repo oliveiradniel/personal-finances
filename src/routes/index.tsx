@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Layout from '../components/Layout';
 
 import Auth from '../pages/Auth';
+import Dashboard from '../pages/Dashboard';
 
 export default function Router() {
   return (
@@ -11,14 +12,7 @@ export default function Router() {
       <Route path="/signup" element={<Auth type="signup" />} />
 
       <Route element={<Layout />}>
-        <Route
-          index
-          element={
-            <div>
-              <h1>Essa é a página inicial</h1>
-            </div>
-          }
-        />
+        <Route index element={<Dashboard />} />
       </Route>
     </Routes>
   );
