@@ -1,4 +1,10 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+
+import { useTheme } from 'styled-components';
+
+import { getDashboard } from '../../services/requests/dashboard';
+
+import { formatValue } from '../../utils/formatValue';
 
 import { FcBullish, FcCancel, FcOk } from 'react-icons/fc';
 import { MdAdd } from 'react-icons/md';
@@ -30,14 +36,13 @@ export default function Dashboard() {
   const [yearSelected, setYearSelected] = useState(
     new Date().getFullYear().toString()
   );
+  const [dataDashboard, setDataDashboard] = useState({
+    balance: 0,
+    pending_transactions: 0,
+    completed_transactions: 0,
+  });
 
-  function handleMonthSelected({ target }: ChangeEvent<HTMLSelectElement>) {
-    setMonthSelected(target.value);
-  }
-
-  function handleYearSelected({ target }: ChangeEvent<HTMLSelectElement>) {
-    setYearSelected(target.value);
-  }
+  const theme = useTheme();
 
   const yearsList = Array.from(
     { length: new Date().getFullYear() - 2025 + 1 },
@@ -56,6 +61,24 @@ export default function Dashboard() {
       label: date.toLocaleDateString('pt-BR', { month: 'long' }),
     };
   });
+
+  function handleMonthSelected({ target }: ChangeEvent<HTMLSelectElement>) {
+    setMonthSelected(target.value);
+  }
+
+  function handleYearSelected({ target }: ChangeEvent<HTMLSelectElement>) {
+    setYearSelected(target.value);
+  }
+
+  const handleGetDashbord = useCallback(async () => {
+    const response = await getDashboard(monthSelected, yearSelected);
+
+    setDataDashboard(response);
+  }, [monthSelected, yearSelected]);
+
+  useEffect(() => {
+    handleGetDashbord();
+  }, [handleGetDashbord]);
 
   return (
     <Container>
@@ -88,7 +111,16 @@ export default function Dashboard() {
             <FcBullish size={32} />
 
             <InformationCardContent>
-              <InformationCardContentValue>0</InformationCardContentValue>
+              <InformationCardContentValue
+                style={{
+                  color:
+                    dataDashboard.balance >= 0
+                      ? theme.COLORS.success
+                      : theme.COLORS.danger,
+                }}
+              >
+                {formatValue(dataDashboard.balance)}
+              </InformationCardContentValue>
 
               <InformationCardContentLabel>
                 Saldo atual do mês!
@@ -100,7 +132,9 @@ export default function Dashboard() {
             <FcCancel size={32} />
 
             <InformationCardContent>
-              <InformationCardContentValue>0</InformationCardContentValue>
+              <InformationCardContentValue>
+                {formatValue(dataDashboard.pending_transactions)}
+              </InformationCardContentValue>
 
               <InformationCardContentLabel>
                 Transações Pendentes
@@ -112,7 +146,9 @@ export default function Dashboard() {
             <FcOk size={32} />
 
             <InformationCardContent>
-              <InformationCardContentValue>0</InformationCardContentValue>
+              <InformationCardContentValue>
+                {formatValue(dataDashboard.completed_transactions)}
+              </InformationCardContentValue>
 
               <InformationCardContentLabel>
                 Transações Concluídas
